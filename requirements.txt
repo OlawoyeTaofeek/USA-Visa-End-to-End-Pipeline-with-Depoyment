@@ -1,0 +1,55 @@
+ipykernel
+
+# Data Analysis, preprocessing and visualization
+pandas
+numpy
+matplotlib
+plotly
+seaborn
+scipy
+
+# Database 
+pymongo
+sqlalchemy
+psycopg2-binary
+
+# MLflow for experiment tracking
+mlflow
+boto3
+mypy-boto3-s3
+botocore
+
+# Evidently for model monitoring and Evaluations 
+evidently==0.2.8
+
+# Model serving and API
+fastapi
+uvicorn
+pydantic
+httpx
+
+python-multipart
+-e .
+
+#  models
+catboost
+lightgbm
+scikit-learn
+imblearn
+
+# Testing
+pytest
+
+# Data validation
+pandera
+
+# Feature engineering
+category-encoders
+
+# Extra Utilities
+from_root
+dill
+PyYAML
+neuro_mf
+joblib
+python-dotenv
