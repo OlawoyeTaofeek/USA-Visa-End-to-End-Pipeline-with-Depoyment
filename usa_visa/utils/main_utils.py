@@ -5,14 +5,14 @@ from pymongo import MongoClient
 import logging
 from typing import Union, Dict
 import yaml
-from box import Box, ConfigBox
-from usa_visa.exception import USVisaException
+from box import ConfigBox
+from typing import Dict
+from pathlib import Path
 import sys
+from usa_visa.exception import USVisaException
 
 # Load environment variables
 load_dotenv()
-
-
 import yaml
 from box import ConfigBox
 from typing import Dict
@@ -27,6 +27,7 @@ def load_yaml(file_path: str) -> Dict:
     try:
         with open(file_path, "r") as file:
             data = yaml.safe_load(file)
+        logging.info(f"yaml file {file_path} loaded successfully")
         return ConfigBox(data)
     except Exception as e:
         raise USVisaException(e, sys) from e # type: ignore
