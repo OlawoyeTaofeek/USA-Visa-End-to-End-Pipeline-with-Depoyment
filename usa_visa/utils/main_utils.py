@@ -31,6 +31,8 @@ def load_yaml(file_path: str) -> Dict:
         return ConfigBox(data)
     except Exception as e:
         raise USVisaException(e, sys) from e # type: ignore
+    
+
         
 class MongoDbConnection:
     """A class allowing data push into MongoDB, and data pull from MongoDB"""
@@ -41,9 +43,12 @@ class MongoDbConnection:
         if not self.uri:
             raise ValueError("The MongoDB URI is missing")
         else:
-            self.client = MongoClient(self.uri)
-            self.db = self.client['usa_visa_db']
-            self.collection = self.db['usa_visa']
+            try:
+                self.client = MongoClient(self.uri)
+                self.db = self.client['usa_visa_db']
+                self.collection = self.db['usa_visa']
+            except Exception as e:
+                raise USVisaException(e, sys) # type: ignore
 
     def df_to_mongo(self):
         """Insert CSV data into MongoDB"""
@@ -58,10 +63,13 @@ class MongoDbConnection:
             logging.info(f"Inserted {len(data)} records into MongoDB collection 'usa_visa'")
         except FileNotFoundError as e:
             logging.error(f"File not found: {e}")
+            raise USVisaException(e, sys) # type: ignore
         except Exception as e:
             logging.error(f"Error inserting data into MongoDB: {e}")
+            raise USVisaException(e, sys) # type: ignore
+            
 
-    def count_documents(self, query=None):
+    def count_documents(self, query=None) -> int:
         """Count documents in the usa_visa collection"""
         try:
             if query is None:
@@ -73,7 +81,7 @@ class MongoDbConnection:
             logging.error(f"Error counting documents: {e}")
             return 0
 
-    def mongo_to_df(self, query=None):
+    def mongo_to_df(self, query=None) -> pd.DataFrame:
         """Retrieve data from MongoDB into pandas DataFrame"""
         try:
             if query is None:
@@ -86,7 +94,7 @@ class MongoDbConnection:
             logging.error(f"Error retrieving data from MongoDB: {e}")
             return pd.DataFrame()
 
-    def close_connection(self):
+    def close_connection(self) -> None:
         """Close MongoDB client connection"""
         self.client.close()
         logging.info("MongoDB connection closed")
