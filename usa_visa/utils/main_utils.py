@@ -10,6 +10,7 @@ from typing import Dict
 from pathlib import Path
 import sys
 from usa_visa.exception import USVisaException
+import matplotlib.pyplot as plt
 
 # Load environment variables
 load_dotenv()
@@ -98,3 +99,21 @@ class MongoDbConnection:
         """Close MongoDB client connection"""
         self.client.close()
         logging.info("MongoDB connection closed")
+
+
+def save_fig(fig, filename, folder="charts", dpi=300, bbox_inches="tight"):
+    """
+    Save a matplotlib figure with consistent settings.
+
+    Parameters:
+        fig (matplotlib.figure.Figure): The figure object.
+        filename (str): Name of the file (without extension).
+        folder (str): Folder where the image will be saved.
+        dpi (int): Resolution.
+        bbox_inches (str): Bounding box handling.
+    """
+    import os
+    os.makedirs(folder, exist_ok=True)
+    filepath = os.path.join(folder, f"{filename}.png")
+    fig.savefig(filepath, dpi=dpi, bbox_inches=bbox_inches)
+    print(f"Figure saved at: {filepath}")
